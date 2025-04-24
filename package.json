@@ -1,5 +1,5 @@
 {
-  "name": "login-register-page",
+  "name": "app-lms-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
