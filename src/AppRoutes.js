@@ -5,7 +5,7 @@ import Cabinet from "./pages/cabinet";
 import ForgotPassword from "./pages/forgot-password";
 import SuccessLinkSent from "./pages/successLinkSent";
 import ResetPassword from "./pages/reset-password";
-import PrivateRoute from "./component/privateRoute";
+import PrivateRoute from "./components/PrivateRoute";
 import Course from "./pages/course";
 
 
