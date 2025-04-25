@@ -10,24 +10,24 @@ const EditRole = () => {
 
   const [roleName, setRoleName] = useState('');
   const [selectedPermissions, setSelectedPermissions] = useState([]);
-  const [permissions, setPermissions] = useState([]);
+  const [allPermissions, setAllPermissions] = useState([]);
 
-  // Получение всех permission'ов
-  const fetchPermissions = useCallback(() => {
-    axios.get("http://localhost:8085/api/permissions", {
+  // Получение всех доступных permissions
+  const fetchAllPermissions = useCallback(() => {
+    axios.get("http://localhost:8085/api/role/permissions", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("AccessToken")
       }
     })
     .then(res => {
-      setPermissions(res.data.data); // массив строк
+      setAllPermissions(res.data.data); // массив строк
     })
-    .catch(err => {
+    .catch(() => {
       toast.error("Не удалось загрузить список разрешений");
     });
   }, []);
 
-  // Получение данных текущей роли
+  // Получение текущей роли
   const fetchRole = useCallback(() => {
     axios.get(`http://localhost:8085/api/role/${id}`, {
       headers: {
@@ -39,26 +39,30 @@ const EditRole = () => {
       setRoleName(name);
       setSelectedPermissions(permissions || []);
     })
-    .catch(err => {
-      toast.error("Не удалось загрузить роль");
+    .catch(() => {
+      toast.error("Не удалось загрузить данные роли");
     });
   }, [id]);
 
+  // Загрузка данных при монтировании
   useEffect(() => {
-    fetchPermissions();
+    fetchAllPermissions();
     fetchRole();
-  }, [fetchPermissions, fetchRole]);
+  }, [fetchAllPermissions, fetchRole]);
 
+  // Обработка выбора permission'ов
   const handlePermissionChange = (permission) => {
     if (selectedPermissions.includes(permission)) {
-      setSelectedPermissions(selectedPermissions.filter(p => p !== permission));
+      setSelectedPermissions(prev => prev.filter(p => p !== permission));
     } else {
-      setSelectedPermissions([...selectedPermissions, permission]);
+      setSelectedPermissions(prev => [...prev, permission]);
     }
   };
 
+  // Отправка формы
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const roleData = {
       name: roleName,
       permissions: selectedPermissions
@@ -66,14 +70,16 @@ const EditRole = () => {
 
     axios.put(`http://localhost:8085/api/role/${id}`, roleData, {
       headers: {
-        Authorization: "Bearer " + localStorage.getItem("AccessToken")
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + localStorage.getItem("AccessToken")
       }
     })
-    .then(res => {
+
+    .then(() => {
       toast.success("Роль успешно обновлена");
       navigate("/role");
     })
-    .catch(err => {
+    .catch(() => {
       toast.error("Не удалось обновить роль");
     });
   };
@@ -92,10 +98,11 @@ const EditRole = () => {
             required
           />
         </div>
+
         <div className="mb-3">
-          <label className="form-label">Права</label>
+          <label className="form-label">Права доступа</label>
           <div className="d-flex flex-wrap">
-            {permissions.map((permission, index) => (
+            {allPermissions.map((permission, index) => (
               <div key={index} className="form-check me-3">
                 <input
                   className="form-check-input"
@@ -111,6 +118,7 @@ const EditRole = () => {
             ))}
           </div>
         </div>
+
         <button type="submit" className="btn btn-primary">Сохранить</button>
       </form>
     </div>

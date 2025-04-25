@@ -18,6 +18,10 @@ const RoleList = () => {
         fetchRoles();
     }, []);
 
+    useEffect(() => {
+        console.log("🔍 showModal изменилось:", showModal);
+    }, [showModal]);
+
     const fetchRoles = () => {
         axios.get("http://localhost:8085/api/role", {
             headers: {
@@ -31,20 +35,26 @@ const RoleList = () => {
     };
 
     const handleDelete = (id) => {
+        console.log("➡️ Попытка удалить роль с ID:", id);
+
         axios.get(`http://localhost:8085/api/role/check-used/${id}`, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("AccessToken")
             }
         }).then(res => {
+            console.log("🟢 Ответ от сервера:", res.data);
             const users = res.data.data;
             if (users.length === 0) {
-                deleteRole(id); // просто удалить
+                console.log("✅ Роль не используется, удаляем напрямую");
+                deleteRole(id);
             } else {
+                console.log("⚠️ Роль используется пользователями:", users);
                 setUsersUsingRole(users);
                 setRoleToDelete(id);
                 setShowModal(true);
             }
-        }).catch(() => {
+        }).catch(err => {
+            console.error("❌ Ошибка при проверке использования роли:", err);
             toast.error("Ошибка при проверке использования роли");
         });
     };
@@ -83,9 +93,16 @@ const RoleList = () => {
     return (
         <div className="container mt-5">
             <h2 className="text-center mb-4">Список ролей</h2>
+
+            {/* Временная кнопка для ручной проверки модалки */}
+            <button className="btn btn-info mb-3" onClick={() => setShowModal(true)}>
+                🔧 Тест: открыть модалку вручную
+            </button>
+
             <div className="text-end mb-3">
                 <button className="btn btn-success" onClick={() => navigate("/role/add")}>Добавить роль</button>
             </div>
+
             <ul className="list-group">
                 {roles.map(role => (
                     <li key={role.id} className="list-group-item d-flex justify-content-between align-items-center">
