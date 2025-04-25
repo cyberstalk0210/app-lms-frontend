@@ -7,6 +7,12 @@ import SuccessLinkSent from "./pages/successLinkSent";
 import ResetPassword from "./pages/reset-password";
 import PrivateRoute from "./components/PrivateRoute";
 import Course from "./pages/course";
+import RoleList from "./pages/role/roleList";
+import AddRole from "./pages/role/addRole";
+import EditRole from "./pages/role/editRole";
+import Sidebar from "./components/Sidebar/Sidebar";
+import Navbar from "./components/Navbar/Navbar";
+import Admission from "./pages/admission";
 
 
 const AppRoutes = () => {
@@ -20,9 +26,10 @@ const AppRoutes = () => {
             <Route element={<PrivateRoute/>}>
                 <Route path="/cabinet" element={<Cabinet/>}/>
                 <Route path="/course" element={<Course/>}/>
+                <Route path="/admission" element={<Admission/>}/>
                 <Route path="/role" element={<RoleList/>}/>
-                                <Route path="/role/add" element={<AddRole/>}/>
-                                <Route path="/role/edit/:id" element={<EditRole />} />
+                <Route path="/role/add" element={<AddRole/>}/>
+                <Route path="/role/edit/:id" element={<EditRole/>}/>
             </Route>
             <Route path="*" element={<NotFound/>}/>
         </Routes>

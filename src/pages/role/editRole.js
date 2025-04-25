@@ -39,8 +39,9 @@ const EditRole = () => {
       setRoleName(name);
       setSelectedPermissions(permissions || []);
     })
-    .catch(() => {
-      toast.error("Не удалось загрузить данные роли");
+    .catch(err => {
+      console.log(err);
+      toast.error(err.response.data.errors[0].msg);
     });
   }, [id]);
 
