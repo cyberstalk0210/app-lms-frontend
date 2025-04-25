@@ -20,6 +20,9 @@ const AppRoutes = () => {
             <Route element={<PrivateRoute/>}>
                 <Route path="/cabinet" element={<Cabinet/>}/>
                 <Route path="/course" element={<Course/>}/>
+                <Route path="/role" element={<RoleList/>}/>
+                                <Route path="/role/add" element={<AddRole/>}/>
+                                <Route path="/role/edit/:id" element={<EditRole />} />
             </Route>
             <Route path="*" element={<NotFound/>}/>
         </Routes>
