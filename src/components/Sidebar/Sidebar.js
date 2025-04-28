@@ -14,17 +14,17 @@ const Sidebar= () => {
           <FiHome className="nav-icon" />
           <span>Dashboard</span>
         </Link>
-        <Link to="/courses" className="nav-item">
+        <Link to="/course" className="nav-item">
           <FiBook className="nav-icon" />
           <span>Courses</span>
         </Link>
-        <Link to="/students" className="nav-item">
+        <Link to="/admission" className="nav-item">
           <FiUsers className="nav-icon" />
-          <span>Students</span>
+          <span>Admission</span>
         </Link>
-        <Link to="/schedule" className="nav-item">
+        <Link to="/role" className="nav-item">
           <FiCalendar className="nav-icon" />
-          <span>Schedule</span>
+          <span>Role</span>
         </Link>
         <Link to="/settings" className="nav-item">
           <FiSettings className="nav-icon" />
